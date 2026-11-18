@@ -11,7 +11,7 @@ Rutinas en R que miden y valoran el trabajo doméstico y de cuidado no remunerad
 | --- | --- | --- | --- |
 | `ENUT_2024.R` | ENUT 2024 | Cuadros 1, 5 y 6 (horas anuales, horas semanales por participante y tasa de participación en TDCNR) | 6 regiones clásicas (`REGION1`) |
 | `ENUT_2024_8R.R` | ENUT 2024 | Los mismos cuadros | 8 regiones (`REGION2`): agrega Orinoquía y Amazonía |
-| `GEIH_2024_V3.R` | GEIH 2024 y ENUT 2024 | Ingreso laboral por hora por código CSEC y salario promedio por funcionalidad | Nacional |
+| `GEIH_2024_V3.R` | GEIH 2024 y ENUT 2024 | Ingreso medio por hora por funcionalidad (`sfuncional`): resultados del Cuadro 2 del anexo CSEC; coinciden con el anexo 2024p publicado por el DANE | Según la cobertura elegida (6 u 8 regiones) |
 
 Las tres rutinas son independientes y pueden correrse en cualquier orden.
 

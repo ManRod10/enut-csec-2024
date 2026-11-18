@@ -1,0 +1,24 @@
+# Scripts anteriores (rutas locales, fuera del repositorio)
+Enut.R
+GEIH.R
+GEIH_2021M18.R
+GEIH_2024.R
+GEIH_2024_V2.R
+Class_t2c.R
+Clasificador_DescriptivasGEIH_CCSEC.txt
+
+# Datos y resultados: nunca se suben
+*.csv
+*.CSV
+*.xlsx
+*.xls
+*.dta
+*.sas7bdat
+*.rds
+*.RData
+*.zip
+
+# R y RStudio
+.Rhistory
+.Rproj.user/
+.Renviron

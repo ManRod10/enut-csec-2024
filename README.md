@@ -2,7 +2,7 @@
 
 Rutinas en R que miden y valoran el trabajo doméstico y de cuidado no remunerado (TDCNR) de 2024 para la Cuenta Satélite de Economía del Cuidado (CSEC).
 
-- **Documento metodológico (online):** [`docs/index.html`](docs/index.html), publicado con GitHub Pages.
+- **Documento metodológico (online):** <https://manrod10.github.io/enut-csec-2024/> (fuente: [`docs/index.html`](docs/index.html))
 - **Documento metodológico (PDF):** [`docs/Metodologia_TDCNR_CSEC_2024.pdf`](docs/Metodologia_TDCNR_CSEC_2024.pdf)
 
 ## Rutinas

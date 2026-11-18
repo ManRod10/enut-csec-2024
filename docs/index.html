@@ -5,62 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Metodología TDCNR por funcionalidad CSEC 2024</title>
 <meta name="description" content="Documento metodológico de las rutinas ENUT_2024.R, ENUT_2024_8R.R y GEIH_2024_V3.R para la Cuenta Satélite de Economía del Cuidado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,600&family=JetBrains+Mono:wght@400&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
   onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true}],throwOnError:false});document.body.dataset.math='ok'"></script>
 <style>
-:root{--tinta:#1d2733;--suave:#5a6675;--linea:#d6dce3;--fondo:#ffffff;--banda:#12385c;--acento:#c8102e;--celda:#f3f5f8;}
+:root{
+  --tinta:#26303b; --suave:#66717d; --tenue:#8a939d;
+  --linea:#e6e2da; --fondo:#fcfbf8; --papel:#ffffff; --crema:#f5f2ec;
+  --acento:#b4532a; --acento-suave:#f6e9e1;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--fondo);color:var(--tinta);font:16px/1.6 "Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-header.portada{background:var(--banda);color:#fff;padding:40px 16px 32px}
-header.portada .in,main{max-width:860px;margin:0 auto}
-header.portada .serie{font-size:13px;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 12px}
-header.portada h1{font-size:30px;line-height:1.25;margin:0 0 16px;font-weight:600}
-header.portada .meta{font-size:14px;opacity:.9;margin:0}
-header.portada .barra{height:4px;width:72px;background:var(--acento);margin-top:20px}
-main{padding:24px 16px 64px}
-nav.toc{border:1px solid var(--linea);border-radius:8px;padding:12px 20px;margin:8px 0 32px;background:var(--celda)}
-nav.toc h2{font-size:15px;margin:4px 0 8px;border:0;padding:0}
-nav.toc ol{margin:0;padding-left:0;list-style:none;columns:2;column-gap:32px;font-size:14px}
-nav.toc a{color:var(--banda);text-decoration:none}
-h2{font-size:22px;color:var(--banda);border-bottom:2px solid var(--linea);padding-bottom:6px;margin:40px 0 16px}
-h3{font-size:17px;margin:28px 0 10px}
-p,li{max-width:76ch}
-code{font-family:Consolas,"Cascadia Mono",monospace;font-size:.88em;background:var(--celda);padding:1px 5px;border-radius:4px}
-pre{background:var(--celda);border:1px solid var(--linea);border-radius:6px;padding:12px 16px;overflow-x:auto;font-size:14px;line-height:1.4}
-pre code{background:none;padding:0}
-.tabla{overflow-x:auto;margin:12px 0 20px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th{background:var(--banda);color:#fff;text-align:left;font-weight:600;padding:8px 10px}
-td{border-bottom:1px solid var(--linea);padding:7px 10px;vertical-align:top}
-tbody tr:nth-child(even) td{background:var(--celda)}
-.formula{overflow-x:auto;margin:12px 0 18px;padding:4px 0}
-figure.diagrama{margin:16px 0 24px}
-figure.diagrama img{max-width:100%;height:auto;border:1px solid var(--linea);border-radius:6px}
-figcaption{font-size:13px;color:var(--suave);margin-top:6px}
-footer{max-width:860px;margin:0 auto;padding:16px;border-top:1px solid var(--linea);font-size:13px;color:var(--suave)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--tinta);
+  font:17px/1.7 "Source Sans 3","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--acento);text-decoration-thickness:1px;text-underline-offset:3px}
+.pagina{max-width:1180px;margin:0 auto;padding:0 16px}
+header.portada{padding:72px 0 8px}
+.serie{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--acento);margin:0 0 14px;font-weight:600}
+h1{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:40px;line-height:1.18;margin:0 0 18px;letter-spacing:-.01em}
+.meta{color:var(--suave);font-size:15px;margin:0}
+.meta code{background:none;padding:0;color:var(--suave)}
+.cuerpo{display:grid;grid-template-columns:minmax(0,760px);justify-content:center;column-gap:56px;row-gap:28px;padding-bottom:72px}
+nav.toc{font-size:14.5px;line-height:1.5;margin:0 0 8px;padding:18px 22px;background:var(--crema);border-radius:14px}
+nav.toc h2{font-family:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--tenue);margin:0 0 10px;font-weight:600}
+nav.toc ol{list-style:none;margin:0;padding:0;columns:2;column-gap:28px}
+nav.toc li{break-inside:avoid;margin:0 0 6px}
+nav.toc a{color:var(--tinta);text-decoration:none}
+nav.toc a:hover{color:var(--acento)}
+nav.toc code{background:none;padding:0;font-size:.9em;color:var(--suave)}
+@media (min-width:1120px){
+  .cuerpo{grid-template-columns:220px minmax(0,760px);justify-content:center}
+  header.portada{grid-column:2}
+  nav.toc{grid-column:1;grid-row:2}
+  main{grid-column:2;grid-row:2}
+  nav.toc{position:sticky;top:32px;align-self:start;background:none;padding:0;margin-top:6px;max-height:calc(100vh - 64px);overflow:auto}
+  nav.toc ol{columns:1}
+}
+main h2{font-family:"Source Serif 4",Georgia,serif;font-weight:600;font-size:27px;line-height:1.25;margin:56px 0 14px;scroll-margin-top:24px}
+main h2:first-child{margin-top:0}
+main h3{font-size:19px;font-weight:600;margin:34px 0 8px}
+p{margin:0 0 16px}
+ul,ol{padding-left:22px;margin:0 0 16px}
+li{margin:0 0 6px}
+strong{font-weight:600}
+code{font-family:"JetBrains Mono",Consolas,monospace;font-size:.82em;background:var(--crema);padding:1px 6px;border-radius:6px}
+pre{background:var(--crema);border-radius:12px;padding:16px 18px;overflow-x:auto;font-size:14px;line-height:1.5;margin:0 0 18px}
+pre code{background:none;padding:0;font-size:inherit}
+.tabla{overflow-x:auto;margin:6px 0 22px;border:1px solid var(--linea);border-radius:12px;background:var(--papel)}
+table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.5}
+th{text-align:left;font-weight:600;color:var(--suave);font-size:13px;letter-spacing:.02em;padding:11px 14px;border-bottom:1px solid var(--linea);background:var(--crema)}
+td{padding:10px 14px;border-bottom:1px solid var(--linea);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+.formula{overflow-x:auto;margin:8px 0 22px;padding:14px 18px;background:var(--papel);border-left:3px solid var(--acento);border-radius:0 12px 12px 0}
+figure.diagrama{margin:24px 0 18px}
+figure.diagrama img{max-width:100%;height:auto;display:block;border-radius:12px;background:var(--papel)}
+figcaption{font-size:14px;color:var(--tenue);margin-top:8px}
+footer{border-top:1px solid var(--linea);color:var(--tenue);font-size:14px;padding:22px 0 48px;text-align:center}
+@media (max-width:640px){
+  body{font-size:16px}
+  header.portada{padding:44px 0 28px}
+  h1{font-size:30px}
+  main h2{font-size:23px}
+  nav.toc ol{columns:1}
+}
 @media print{
-  @page{size:letter;margin:18mm 16mm}
-  body{font-size:11pt}
-  header.portada{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  th,tbody tr:nth-child(even) td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  h2{break-after:avoid} h3{break-after:avoid}
-  table,figure,.formula,pre{break-inside:avoid}
-  nav.toc{break-inside:avoid}
+  @page{size:letter;margin:18mm 17mm}
+  body{background:#fff;font-size:10.5pt}
+  .pagina{padding:0}
+  header.portada{padding:8mm 0 6mm}
+  h1{font-size:25pt}
+  .cuerpo{display:block}
+  nav.toc{position:static;background:var(--crema);padding:12px 16px;margin-bottom:18px;break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  nav.toc ol{columns:2}
+  main h2{font-size:17pt;margin-top:26px;break-after:avoid}
+  main h3{break-after:avoid}
+  .tabla,figure,.formula,pre{break-inside:avoid}
   .tabla{overflow:visible}
+  th,code,pre,.formula{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  footer{display:none}
 }
 </style>
 </head>
 <body>
-<header class="portada"><div class="in">
+<div class="pagina">
+<div class="cuerpo">
+<header class="portada">
 <p class="serie">Cuenta Satélite de Economía del Cuidado · Documento metodológico</p>
 <h1>Metodología de cálculo del TDCNR por funcionalidad CSEC – ENUT 2024 y GEIH 2024</h1>
-<p class="meta">Versión del 18 de noviembre de 2026 · Rutinas <code style="background:none;color:#fff;padding:0">ENUT_2024.R</code>, <code style="background:none;color:#fff;padding:0">ENUT_2024_8R.R</code> y <code style="background:none;color:#fff;padding:0">GEIH_2024_V3.R</code></p>
-<div class="barra"></div>
-</div></header>
-<main>
+<p class="meta">Versión del 18 de noviembre de 2026 · Rutinas <code>ENUT_2024.R</code>, <code>ENUT_2024_8R.R</code> y <code>GEIH_2024_V3.R</code></p>
+</header>
 <nav class="toc"><h2>Contenido</h2><ol><li><a href="#1-presentación">1. Presentación</a></li><li><a href="#2-objetivos-y-alcance">2. Objetivos y alcance</a></li><li><a href="#3-fuentes-de-información-e-insumos">3. Fuentes de información e insumos</a></li><li><a href="#4-marco-conceptual">4. Marco conceptual</a></li><li><a href="#5-procesamiento-de-la-enut-2024-enut2024r">5. Procesamiento de la ENUT 2024 (<code>ENUT_2024.R</code>)</a></li><li><a href="#6-variante-de-8-regiones-enut20248rr">6. Variante de 8 regiones (<code>ENUT_2024_8R.R</code>)</a></li><li><a href="#7-ingreso-por-hora-y-valoración-geih2024v3r">7. Ingreso por hora y valoración (<code>GEIH_2024_V3.R</code>)</a></li><li><a href="#8-productos-y-salidas">8. Productos y salidas</a></li><li><a href="#9-consideraciones-metodológicas-y-limitaciones">9. Consideraciones metodológicas y limitaciones</a></li><li><a href="#10-anexos">10. Anexos</a></li></ol></nav>
+<main>
 
 <h2 id="1-presentación">1. Presentación</h2>
 <p>Este documento describe cómo tres rutinas en R miden y valoran el trabajo doméstico y de cuidado no remunerado (TDCNR) de 2024 para la Cuenta Satélite de Economía del Cuidado (CSEC). Dos rutinas producen los cuadros de tiempo con la Encuesta Nacional de Uso del Tiempo (ENUT) 2024. La tercera estima con la Gran Encuesta Integrada de Hogares (GEIH) 2024 el salario por hora que se asigna a cada funcionalidad del TDCNR.</p>
@@ -213,6 +253,8 @@ footer{max-width:860px;margin:0 auto;padding:16px;border-top:1px solid var(--lin
 <ul><li><p><strong>CSEC:</strong> Cuenta Satélite de Economía del Cuidado.</p></li><li><p><strong>ENUT:</strong> Encuesta Nacional de Uso del Tiempo.</p></li><li><p><strong>GEIH:</strong> Gran Encuesta Integrada de Hogares.</p></li><li><p><strong>TDCNR:</strong> Trabajo doméstico y de cuidado no remunerado.</p></li><li><p><strong>FEX:</strong> Factor de expansión.</p></li></ul>
 
 </main>
-<footer>Documento generado a partir de la versión editable de la metodología. Versión PDF: <a href="Metodologia_TDCNR_CSEC_2024.pdf">Metodologia_TDCNR_CSEC_2024.pdf</a>.</footer>
+</div>
+<footer>Versión PDF: <a href="Metodologia_TDCNR_CSEC_2024.pdf">Metodologia_TDCNR_CSEC_2024.pdf</a> · Código: <a href="https://github.com/ManRod10/enut-csec-2024">ManRod10/enut-csec-2024</a></footer>
+</div>
 </body>
 </html>

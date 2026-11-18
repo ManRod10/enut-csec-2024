@@ -18,6 +18,7 @@
 #   2. GEIH: ingreso por hora y salario promedio por código CSEC  -> `horas`
 #   3. ENUT: horas anuales por pregunta y funcionalidad           -> `res`
 #   4. Valoración: salario promedio por funcionalidad             -> `sfuncional`
+#   5. Cuadro 2 del anexo CSEC: escribe `sfuncional` en la plantilla
 ################################################################################
 
 library(dplyr)
@@ -341,3 +342,40 @@ sfuncional <- restotal |> dplyr::group_by(Funcionalidad) |> dplyr::summarize(sum
 sfuncional
 
 #write_xlsx(sfuncional, "ENUT/Output/Salarios_Funcionales_2024_V3.xlsx")
+
+# 5. Cuadro 2 del anexo CSEC ----------------------------------------------------
+# `sfuncional` es el principal insumo del Cuadro 2 ("Remuneración de los
+# asalariados e ingreso medio por hora, según funcionalidad"). Se escribe en la
+# columna C (2024) de la plantilla que corresponde a la cobertura elegida; la
+# columna B conserva el valor 2021 y la D calcula la variación (C / B - 1).
+#   ENUT_FILTRA_REGION1 = TRUE  -> Resultado_ENUT_2024.xlsx    (6 regiones)
+#   ENUT_FILTRA_REGION1 = FALSE -> Resultado_ENUT_2024_8R.xlsx (8 regiones)
+
+cuadro2_archivo <- if (ENUT_FILTRA_REGION1) {
+  "ENUT/Output/Resultado_ENUT_2024.xlsx"
+} else {
+  "ENUT/Output/Resultado_ENUT_2024_8R.xlsx"
+}
+
+cuadro2_filas <- 9:15   # 6 funcionalidades + Generalista
+
+cuadro2_valores <- c(
+  sfuncional[[2]][order(sfuncional$Funcionalidad)],
+  horas3$vp[horas3$COD_CSEC == "GENERALISTA"]
+)
+
+cuadro2_wb <- openxlsx::loadWorkbook(cuadro2_archivo)
+
+cuadro2_rotulos <- openxlsx::read.xlsx(cuadro2_wb, sheet = "Cuadro 2", colNames = FALSE,
+                                       rows = cuadro2_filas, cols = 1,
+                                       skipEmptyRows = FALSE)[[1]]
+stopifnot(length(cuadro2_valores) == 7,
+          startsWith(cuadro2_rotulos[1], "Suministro de alimentos"),
+          startsWith(cuadro2_rotulos[7], "Generalista"))
+
+openxlsx::writeData(cuadro2_wb, sheet = "Cuadro 2", x = cuadro2_valores,
+                    startCol = 3, startRow = min(cuadro2_filas))
+openxlsx::writeFormula(cuadro2_wb, sheet = "Cuadro 2",
+                       x = paste0("C", cuadro2_filas, "/B", cuadro2_filas, "-1"),
+                       startCol = 4, startRow = min(cuadro2_filas))
+openxlsx::saveWorkbook(cuadro2_wb, cuadro2_archivo, overwrite = TRUE)
